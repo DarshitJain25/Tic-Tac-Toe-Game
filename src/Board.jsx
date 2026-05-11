@@ -40,6 +40,11 @@ export default function Board() {
     return null;
   }
 
+  function resetHandle() {
+    setSquares(Array(squares.length).fill(null));
+    setXIsNext(true);
+  }
+
   const winner = FindWinner(squares);
   let status = null;
   let over = null;
@@ -70,6 +75,14 @@ export default function Board() {
         <Square value={squares[8]} onSquareClick={() => clickHandler(8)} />
       </div>
       <div className="gameOver">{over}</div>
+
+      <button
+        className="reset"
+        style={{ width: "100px" }}
+        onClick={() => resetHandle()}
+      >
+        Reset Game
+      </button>
     </>
   );
 }
