@@ -1,18 +1,22 @@
 import Square from "./Elements.jsx";
 import * as React from "react";
-export default function Board() {
-  const [xisNext, setXIsNext] = React.useState(true); // storing the click's state , to move with character one by one
-  const [squares, setSquares] = React.useState(Array(9).fill(null)); // storing the state of all the cells on the board
+function Board({ xIsNext, squares, onPlay, onTest }) {
+  // const [xisNext, setXIsNext] = React.useState(true); // storing the click's state , to move with character one by one
+  // const [squares, setSquares] = React.useState(Array(9).fill(null)); // storing the state of all the cells on the board
+
   let gameOver = squares.every((ele) => ele !== null);
   function clickHandler(i) {
     if (squares[i] || FindWinner(squares) || gameOver) {
       return;
     }
 
-    const prevStates = [...squares];
-    prevStates[i] = xisNext ? "X" : "O";
-    setSquares(prevStates);
-    setXIsNext(!xisNext);
+    const nextSquares = [...squares];
+    nextSquares[i] = xIsNext ? "X" : "O";
+    // setSquares(prevStates);
+    // setXIsNext(!xisNext);
+
+    onPlay(nextSquares);
+    // onTest();
   }
 
   function FindWinner(squares) {
@@ -40,10 +44,10 @@ export default function Board() {
     return null;
   }
 
-  function resetHandle() {
-    setSquares(Array(squares.length).fill(null));
-    setXIsNext(true);
-  }
+  // function resetHandle() {
+  //   setSquares(Array(squares.length).fill(null));
+  //   setXIsNext(true);
+  // }
 
   const winner = FindWinner(squares);
   let status = null;
@@ -51,7 +55,7 @@ export default function Board() {
   if (winner) {
     status = "Winner : " + winner;
   } else if (!gameOver) {
-    status = "Next Player : " + (xisNext ? "X" : "O");
+    status = "Next Player : " + (xIsNext ? "X" : "O");
   }
   if (gameOver) {
     over = "Game Over";
@@ -76,13 +80,11 @@ export default function Board() {
       </div>
       <div className="gameOver">{over}</div>
 
-      <button
-        className="reset"
-        style={{ width: "100px" }}
-        onClick={() => resetHandle()}
-      >
+      <button className="reset" style={{ width: "100px" }}>
         Reset Game
       </button>
     </>
   );
 }
+
+export default Board;
